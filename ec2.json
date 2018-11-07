@@ -8,7 +8,7 @@
     "KeyName" : {
       "Description" : "EC2 Key Pair for SSH Access, you must have created these prior to running this.",
       "Type" : "String",
-      "Default" : "jenkins"
+      "Default" : "Jenkins"
   
     }
 }, 
@@ -20,14 +20,14 @@
       "Properties" : {
         "KeyName" : { "Ref" : "KeyName" },
         "InstanceType" :  "t2.micro" ,
-        "ImageId" : "ami-8c1be5f6",
+        "ImageId" : "ami-013be31976ca2c322",
        
 	"NetworkInterfaces" : [{
           "GroupSet"                 : [{ "Ref" : "SimpleInstanceSg" }],
           "AssociatePublicIpAddress" : "true",
           "DeviceIndex"              : "0",
           "DeleteOnTermination"      : "true",
-          "SubnetId"                 : "subnet-a9bae785"
+          "SubnetId"                 : "subnet-3880d372"
         }]
        
       }
@@ -39,7 +39,7 @@
 
       "Properties" : {
         "GroupDescription" : "Enable SSH access via port 22",
-        "VpcId": "vpc-7c5f6905",
+        "VpcId": "vpc-29bd6253",
 
         "SecurityGroupIngress" : [ {
           "IpProtocol" : "tcp",
