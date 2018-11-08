@@ -1,0 +1,80 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Msftedit 5.41.21.2512;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs22 Resources:\par
+  CustomVPC:\par
+    Type: 'AWS::EC2::VPC'\par
+    Properties:\par
+      CidrBlock: "10.0.0.0/16"\par
+\par
+  SubnetPublic:\par
+    Type: 'AWS::EC2::Subnet'\par
+    Properties:\par
+      CidrBlock: "10.0.1.0/24"\par
+      VpcId: !Ref CustomVPC\par
+\par
+  SubnetPrivate:\par
+    Type: 'AWS::EC2::Subnet'\par
+    Properties:\par
+      CidrBlock: "10.0.2.0/24"\par
+      VpcId: !Ref CustomVPC\par
+\par
+  RouteTable:\par
+    Type: AWS::EC2::RouteTable\par
+    Properties:\par
+      VpcId: !Ref CustomVPC\par
+\par
+  Route:\par
+   Type: AWS::EC2::Route\par
+   Properties:\par
+     DestinationCidrBlock: 0.0.0.0/0\par
+     GatewayId: !Ref InternetGateway\par
+     RouteTableId: !Ref RouteTable\par
+\par
+\par
+  SubnetRouteTableAssociation:\par
+    Type: AWS::EC2::SubnetRouteTableAssociation\par
+    Properties:\par
+      RouteTableId:  !Ref RouteTable\par
+      SubnetId: !Ref SubnetPublic\par
+\par
+  InternetGateway:\par
+    Type: 'AWS::EC2::InternetGateway'\par
+\par
+  VPCGatewayAttachment:\par
+    Type: AWS::EC2::VPCGatewayAttachment\par
+    Properties:\par
+      InternetGatewayId: !Ref InternetGateway\par
+      VpcId: !Ref CustomVPC\par
+\par
+  EC2Public:\par
+    Type: 'AWS::EC2::Instance'\par
+    Properties:\par
+      ImageId: ami-0922553b7b0369273\par
+      InstanceType: t2.micro\par
+      SubnetId: !Ref SubnetPublic\par
+      SecurityGroupIds: [!Ref SecurityGroup]\par
+\par
+  EC2Private:\par
+    Type: 'AWS::EC2::Instance'\par
+    Properties:\par
+      ImageId: ami-0922553b7b0369273\par
+      InstanceType: t2.micro\par
+      SubnetId: !Ref SubnetPrivate\par
+      SecurityGroupIds: [!Ref SecurityGroup]\par
+\par
+  SecurityGroup:\par
+    Type: 'AWS::EC2::SecurityGroup'\par
+    Properties:\par
+      GroupName: "LampStackSG"\par
+      GroupDescription: "CustomVPC SECURITY GROUP"\par
+      SecurityGroupEgress:\par
+        - IpProtocol: tcp\par
+          FromPort: 80\par
+          ToPort: 80\par
+          CidrIp: 0.0.0.0/0\par
+      SecurityGroupIngress:\par
+        - IpProtocol: tcp\par
+          FromPort: 80\par
+          ToPort: 80\par
+          CidrIp: 0.0.0.0/0\par
+      VpcId: !Ref CustomVPC\par
+}
