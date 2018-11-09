@@ -44,7 +44,7 @@ Resources:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref CustomVPC
 
-   SecurityGroup:
+  SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupName: "CustomSG"
