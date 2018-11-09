@@ -16,4 +16,47 @@ Resources:
       CidrBlock: "10.0.2.0/24"
       VpcId: !Ref CustomVPC
 
-  
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref CustomVPC
+
+  Route:
+   Type: AWS::EC2::Route
+   Properties:
+     DestinationCidrBlock: 0.0.0.0/0
+     GatewayId: !Ref InternetGateway
+     RouteTableId: !Ref RouteTable
+
+
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:  !Ref RouteTable
+      SubnetId: !Ref SubnetPublic
+
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref CustomVPC
+
+  SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: "CustomSG"
+      GroupDescription: "CustomVPC SECURITY GROUP"
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref CustomVPC
