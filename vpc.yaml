@@ -61,10 +61,3 @@ Resources:
           CidrIp: 0.0.0.0/0
       VpcId: !Ref CustomVPC
    
-  EC2Public:
-    Type: 'AWS::EC2::Instance'
-    Properties:
-      ImageId: ami-0922553b7b0369273
-      InstanceType: t2.micro
-      SubnetId: !Ref SubnetPublic
-      SecurityGroupIds: [!Ref SecurityGroup]
